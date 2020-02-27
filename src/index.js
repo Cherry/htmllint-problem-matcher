@@ -7,7 +7,7 @@ const { issueCommand } = require('@actions/core/lib/command');
 async function run(){
 	try{
 		const action = getInput("action");
-		const matcherFile = path.join(__dirname, ".github", "problem-matcher.json");
+		const matcherFile = path.join(__dirname, "../", ".github", "problem-matcher.json");
 		switch(action){
 			case "add":
 				issueCommand("add-matcher", {}, matcherFile);
