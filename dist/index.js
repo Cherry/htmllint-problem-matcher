@@ -364,7 +364,7 @@ const { issueCommand } = __webpack_require__(431);
 async function run(){
 	try{
 		const action = getInput("action");
-		const matcherFile = path.join(__dirname, ".github", "problem-matcher.json");
+		const matcherFile = path.join(__dirname, "../", ".github", "problem-matcher.json");
 		switch(action){
 			case "add":
 				issueCommand("add-matcher", {}, matcherFile);
