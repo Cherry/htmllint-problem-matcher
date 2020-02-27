@@ -1,0 +1,38 @@
+{
+	"name": "htmllint-problem-matcher",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Sets up a problem matcher for htmllint that's used to create annotations for violations",
+	"main": "index.js",
+	"scripts": {
+		"lint": "eslint .",
+		"test": "jest test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Cherry/htmllint-problem-matcher.git"
+	},
+	"keywords": [
+		"actions",
+		"github",
+		"problem-matcher",
+		"htmllint",
+		"annotations"
+	],
+	"author": "Cherry",
+	"license": "MIT",
+	"dependencies": {
+		"@actions/core": "^1.2.2"
+	},
+	"devDependencies": {
+		"eslint": "^6.8.0",
+		"eslint-config-nodecraft": "^2.0.1",
+		"eslint-plugin-json": "^2.1.0",
+		"eslint-plugin-node": "^11.0.0",
+		"jest": "^25.1.0",
+		"jest-circus": "^25.1.0"
+	},
+	"engines": {
+		"node": ">=12"
+	}
+}

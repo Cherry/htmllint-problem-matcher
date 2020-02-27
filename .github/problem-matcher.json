@@ -1,0 +1,16 @@
+{
+	"problemMatcher": [
+		{
+			"owner": "htmllint",
+			"pattern": [
+				{
+					"regexp": "^(.*): line\\s+(\\d+), col (\\d+),() (.*)()",
+					"file": 1,
+					"line": 2,
+					"column": 3,
+					"message": 5
+				}
+			]
+		}
+	]
+}
