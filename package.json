@@ -3,9 +3,11 @@
 	"version": "1.0.0",
 	"private": true,
 	"description": "Sets up a problem matcher for htmllint that's used to create annotations for violations",
-	"main": "index.js",
+	"main": "dist/index.js",
 	"scripts": {
 		"lint": "eslint .",
+		"package": "ncc build src/index.js",
+		"release": "npm run package && git add -f dist/",
 		"test": "jest test"
 	},
 	"repository": {
@@ -25,6 +27,7 @@
 		"@actions/core": "^1.2.2"
 	},
 	"devDependencies": {
+		"@zeit/ncc": "0.21.1",
 		"eslint": "^6.8.0",
 		"eslint-config-nodecraft": "^2.0.1",
 		"eslint-plugin-json": "^2.1.0",
