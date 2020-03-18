@@ -24,13 +24,13 @@
 	"author": "Cherry",
 	"license": "MIT",
 	"dependencies": {
-		"@actions/core": "^1.2.2"
+		"@actions/core": "^1.2.3"
 	},
 	"devDependencies": {
 		"@zeit/ncc": "0.21.1",
 		"eslint": "^6.8.0",
-		"eslint-config-nodecraft": "^2.0.1",
-		"eslint-plugin-json": "^2.1.0",
+		"eslint-config-nodecraft": "^2.1.4",
+		"eslint-plugin-json": "^2.1.1",
 		"eslint-plugin-node": "^11.0.0",
 		"jest": "^25.1.0",
 		"jest-circus": "^25.1.0"
