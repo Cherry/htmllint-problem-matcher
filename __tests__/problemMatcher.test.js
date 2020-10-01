@@ -1,4 +1,3 @@
-'use strict';
 let problemMatcher = require('../.github/problem-matcher.json');
 problemMatcher = problemMatcher.problemMatcher[0];
 

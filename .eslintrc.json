@@ -6,5 +6,12 @@
 	"plugins": [
 		"json",
 		"node"
-	]
+	],
+	"parserOptions": {
+		"sourceType": "module"
+	},
+	"rules": {
+		"node/no-missing-import": "off",
+		"node/no-unsupported-features/es-syntax": "off"
+	}
 }

@@ -1,4 +1,3 @@
-'use strict';
 const fs = require('fs').promises;
 const path = require('path');
 const {getInput, setFailed} = require('@actions/core');
@@ -30,4 +29,4 @@ async function run(){
 	}
 }
 run();
-module.exports = run;
+export default run;

@@ -430,6 +430,5 @@ async function run(){
 	}
 }
 run();
-var src = run;
 
-module.exports = src;
+module.exports = run;
