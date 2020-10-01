@@ -1,61 +1,54 @@
-module.exports =
-/******/ (function(modules, runtime) { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	__webpack_require__.ab = __dirname + "/";
-/******/
-/******/ 	// the startup function
-/******/ 	function startup() {
-/******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(676);
-/******/ 	};
-/******/
-/******/ 	// run startup
-/******/ 	return startup();
-/******/ })
-/************************************************************************/
-/******/ ({
+'use strict';
 
-/***/ 87:
-/***/ (function(module) {
+const require$$0$1 = require('fs');
+const require$$1 = require('path');
+const require$$0 = require('os');
 
-module.exports = require("os");
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-/***/ }),
+const require$$0__default$1 = /*#__PURE__*/_interopDefaultLegacy(require$$0$1);
+const require$$1__default = /*#__PURE__*/_interopDefaultLegacy(require$$1);
+const require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
 
-/***/ 431:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-"use strict";
+function createCommonjsModule(fn, basedir, module) {
+	return module = {
+		path: basedir,
+		exports: {},
+		require: function (path, base) {
+			return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+		}
+	}, fn(module, module.exports), module.exports;
+}
 
-var __importStar = (this && this.__importStar) || function (mod) {
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+}
+
+var utils = createCommonjsModule(function (module, exports) {
+// We use any as a valid input type
+/* eslint-disable @typescript-eslint/no-explicit-any */
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Sanitizes an input into a string so it can be passed into issueCommand safely
+ * @param input input to sanitize into a string
+ */
+function toCommandValue(input) {
+    if (input === null || input === undefined) {
+        return '';
+    }
+    else if (typeof input === 'string' || input instanceof String) {
+        return input;
+    }
+    return JSON.stringify(input);
+}
+exports.toCommandValue = toCommandValue;
+
+});
+
+var command = createCommonjsModule(function (module, exports) {
+var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
@@ -63,7 +56,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const os = __importStar(__webpack_require__(87));
+const os = __importStar(require$$0__default['default']);
+
 /**
  * Commands
  *
@@ -118,29 +112,55 @@ class Command {
     }
 }
 function escapeData(s) {
-    return (s || '')
+    return utils.toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A');
 }
 function escapeProperty(s) {
-    return (s || '')
+    return utils.toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A')
         .replace(/:/g, '%3A')
         .replace(/,/g, '%2C');
 }
-//# sourceMappingURL=command.js.map
 
-/***/ }),
+});
 
-/***/ 470:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
+var fileCommand = createCommonjsModule(function (module, exports) {
+// For internal use, subject to change.
+var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// We use any as a valid input type
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const fs = __importStar(require$$0__default$1['default']);
+const os = __importStar(require$$0__default['default']);
 
-"use strict";
+function issueCommand(command, message) {
+    const filePath = process.env[`GITHUB_${command}`];
+    if (!filePath) {
+        throw new Error(`Unable to find environment variable for file command ${command}`);
+    }
+    if (!fs.existsSync(filePath)) {
+        throw new Error(`Missing file at path: ${filePath}`);
+    }
+    fs.appendFileSync(filePath, `${utils.toCommandValue(message)}${os.EOL}`, {
+        encoding: 'utf8'
+    });
+}
+exports.issueCommand = issueCommand;
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+});
+
+var core = createCommonjsModule(function (module, exports) {
+var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -149,7 +169,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
+var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
@@ -157,9 +177,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const command_1 = __webpack_require__(431);
-const os = __importStar(__webpack_require__(87));
-const path = __importStar(__webpack_require__(622));
+
+
+
+const os = __importStar(require$$0__default['default']);
+const path = __importStar(require$$1__default['default']);
 /**
  * The code to exit an action
  */
@@ -180,11 +202,21 @@ var ExitCode;
 /**
  * Sets env variable for this action and future actions in the job
  * @param name the name of the variable to set
- * @param val the value of the variable
+ * @param val the value of the variable. Non-string values will be converted to a string via JSON.stringify
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function exportVariable(name, val) {
-    process.env[name] = val;
-    command_1.issueCommand('set-env', { name }, val);
+    const convertedVal = utils.toCommandValue(val);
+    process.env[name] = convertedVal;
+    const filePath = process.env['GITHUB_ENV'] || '';
+    if (filePath) {
+        const delimiter = '_GitHubActionsFileCommandDelimeter_';
+        const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
+        fileCommand.issueCommand('ENV', commandValue);
+    }
+    else {
+        command.issueCommand('set-env', { name }, convertedVal);
+    }
 }
 exports.exportVariable = exportVariable;
 /**
@@ -192,7 +224,7 @@ exports.exportVariable = exportVariable;
  * @param secret value of the secret
  */
 function setSecret(secret) {
-    command_1.issueCommand('add-mask', {}, secret);
+    command.issueCommand('add-mask', {}, secret);
 }
 exports.setSecret = setSecret;
 /**
@@ -200,7 +232,13 @@ exports.setSecret = setSecret;
  * @param inputPath
  */
 function addPath(inputPath) {
-    command_1.issueCommand('add-path', {}, inputPath);
+    const filePath = process.env['GITHUB_PATH'] || '';
+    if (filePath) {
+        fileCommand.issueCommand('PATH', inputPath);
+    }
+    else {
+        command.issueCommand('add-path', {}, inputPath);
+    }
     process.env['PATH'] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
 }
 exports.addPath = addPath;
@@ -223,12 +261,22 @@ exports.getInput = getInput;
  * Sets the value of an output.
  *
  * @param     name     name of the output to set
- * @param     value    value to store
+ * @param     value    value to store. Non-string values will be converted to a string via JSON.stringify
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
-    command_1.issueCommand('set-output', { name }, value);
+    command.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
+/**
+ * Enables or disables the echoing of commands into stdout for the rest of the step.
+ * Echoing is disabled by default if ACTIONS_STEP_DEBUG is not set.
+ *
+ */
+function setCommandEcho(enabled) {
+    command.issue('echo', enabled ? 'on' : 'off');
+}
+exports.setCommandEcho = setCommandEcho;
 //-----------------------------------------------------------------------
 // Results
 //-----------------------------------------------------------------------
@@ -246,27 +294,34 @@ exports.setFailed = setFailed;
 // Logging Commands
 //-----------------------------------------------------------------------
 /**
+ * Gets whether Actions Step Debug is on or not
+ */
+function isDebug() {
+    return process.env['RUNNER_DEBUG'] === '1';
+}
+exports.isDebug = isDebug;
+/**
  * Writes debug message to user log
  * @param message debug message
  */
 function debug(message) {
-    command_1.issueCommand('debug', {}, message);
+    command.issueCommand('debug', {}, message);
 }
 exports.debug = debug;
 /**
  * Adds an error issue
- * @param message error issue message
+ * @param message error issue message. Errors will be converted to string via toString()
  */
 function error(message) {
-    command_1.issue('error', message);
+    command.issue('error', message instanceof Error ? message.toString() : message);
 }
 exports.error = error;
 /**
  * Adds an warning issue
- * @param message warning issue message
+ * @param message warning issue message. Errors will be converted to string via toString()
  */
 function warning(message) {
-    command_1.issue('warning', message);
+    command.issue('warning', message instanceof Error ? message.toString() : message);
 }
 exports.warning = warning;
 /**
@@ -285,14 +340,14 @@ exports.info = info;
  * @param name The name of the output group
  */
 function startGroup(name) {
-    command_1.issue('group', name);
+    command.issue('group', name);
 }
 exports.startGroup = startGroup;
 /**
  * End an output group.
  */
 function endGroup() {
-    command_1.issue('endgroup');
+    command.issue('endgroup');
 }
 exports.endGroup = endGroup;
 /**
@@ -324,10 +379,11 @@ exports.group = group;
  * Saves state for current action, the state can only be retrieved by this action's post job execution.
  *
  * @param     name     name of the state to store
- * @param     value    value to store
+ * @param     value    value to store. Non-string values will be converted to a string via JSON.stringify
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function saveState(name, value) {
-    command_1.issueCommand('save-state', { name }, value);
+    command.issueCommand('save-state', { name }, value);
 }
 exports.saveState = saveState;
 /**
@@ -340,37 +396,24 @@ function getState(name) {
     return process.env[`STATE_${name}`] || '';
 }
 exports.getState = getState;
-//# sourceMappingURL=core.js.map
 
-/***/ }),
+});
 
-/***/ 622:
-/***/ (function(module) {
+const fs = require$$0__default$1['default'].promises;
 
-module.exports = require("path");
-
-/***/ }),
-
-/***/ 676:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-"use strict";
-
-const fs = __webpack_require__(747).promises;
-const path = __webpack_require__(622);
-const { getInput, setFailed } = __webpack_require__(470);
-const { issueCommand } = __webpack_require__(431);
+const {getInput, setFailed} = core;
+const {issueCommand} = command;
 
 async function run(){
 	try{
 		const action = getInput("action");
-		const matcherFile = path.join(__dirname, "../", ".github", "problem-matcher.json");
+		const matcherFile = require$$1__default['default'].join(__dirname, "../", ".github", "problem-matcher.json");
 		switch(action){
 			case "add":
 				issueCommand("add-matcher", {}, matcherFile);
 				break;
 			case "remove":{
-				const fileContents = await fs.readFile(matcherFile, { encoding: "utf8" });
+				const fileContents = await fs.readFile(matcherFile, {encoding: "utf8"});
 				const problemMatcherDocument = JSON.parse(fileContents);
 				const problemMatcher = problemMatcherDocument.problemMatcher[0];
 				issueCommand("remove-matcher", {
@@ -387,16 +430,6 @@ async function run(){
 	}
 }
 run();
-module.exports = run;
+var src = run;
 
-
-/***/ }),
-
-/***/ 747:
-/***/ (function(module) {
-
-module.exports = require("fs");
-
-/***/ })
-
-/******/ });
+module.exports = src;
