@@ -1,8 +1,8 @@
 'use strict';
 const fs = require('fs').promises;
 const path = require('path');
-const { getInput, setFailed } = require('@actions/core');
-const { issueCommand } = require('@actions/core/lib/command');
+const {getInput, setFailed} = require('@actions/core');
+const {issueCommand} = require('@actions/core/lib/command');
 
 async function run(){
 	try{
@@ -13,7 +13,7 @@ async function run(){
 				issueCommand("add-matcher", {}, matcherFile);
 				break;
 			case "remove":{
-				const fileContents = await fs.readFile(matcherFile, { encoding: "utf8" });
+				const fileContents = await fs.readFile(matcherFile, {encoding: "utf8"});
 				const problemMatcherDocument = JSON.parse(fileContents);
 				const problemMatcher = problemMatcherDocument.problemMatcher[0];
 				issueCommand("remove-matcher", {
