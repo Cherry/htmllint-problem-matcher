@@ -24,7 +24,7 @@
 	"author": "Cherry",
 	"license": "MIT",
 	"dependencies": {
-		"@actions/core": "^1.2.3"
+		"@actions/core": "^1.2.6"
 	},
 	"devDependencies": {
 		"@zeit/ncc": "0.21.1",
