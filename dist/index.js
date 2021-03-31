@@ -12,24 +12,14 @@ const require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-function createCommonjsModule(fn, basedir, module) {
-	return module = {
-		path: basedir,
-		exports: {},
-		require: function (path, base) {
-			return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
-		}
-	}, fn(module, module.exports), module.exports;
+function createCommonjsModule(fn) {
+  var module = { exports: {} };
+	return fn(module, module.exports), module.exports;
 }
 
-function commonjsRequire () {
-	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
-}
-
-var utils = createCommonjsModule(function (module, exports) {
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-Object.defineProperty(exports, "__esModule", { value: true });
+
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -43,20 +33,22 @@ function toCommandValue(input) {
     }
     return JSON.stringify(input);
 }
-exports.toCommandValue = toCommandValue;
+var toCommandValue_1 = toCommandValue;
 
-});
 
-var command = createCommonjsModule(function (module, exports) {
-var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
+var utils = /*#__PURE__*/Object.defineProperty({
+	toCommandValue: toCommandValue_1
+}, '__esModule', {value: true});
+
+var __importStar$1 = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
     result["default"] = mod;
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const os = __importStar(require$$0__default['default']);
+
+const os$1 = __importStar$1(require$$0__default['default']);
 
 /**
  * Commands
@@ -68,15 +60,15 @@ const os = __importStar(require$$0__default['default']);
  *   ::warning::This is the message
  *   ::set-env name=MY_VAR::some value
  */
-function issueCommand(command, properties, message) {
+function issueCommand$2(command, properties, message) {
     const cmd = new Command(command, properties, message);
-    process.stdout.write(cmd.toString() + os.EOL);
+    process.stdout.write(cmd.toString() + os$1.EOL);
 }
-exports.issueCommand = issueCommand;
+var issueCommand_1$1 = issueCommand$2;
 function issue(name, message = '') {
-    issueCommand(name, {}, message);
+    issueCommand$2(name, {}, message);
 }
-exports.issue = issue;
+var issue_1 = issue;
 const CMD_STRING = '::';
 class Command {
     constructor(command, properties, message) {
@@ -126,9 +118,12 @@ function escapeProperty(s) {
         .replace(/,/g, '%2C');
 }
 
-});
 
-var fileCommand = createCommonjsModule(function (module, exports) {
+var command = /*#__PURE__*/Object.defineProperty({
+	issueCommand: issueCommand_1$1,
+	issue: issue_1
+}, '__esModule', {value: true});
+
 // For internal use, subject to change.
 var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
@@ -137,27 +132,30 @@ var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (
     result["default"] = mod;
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const fs = __importStar(require$$0__default$1['default']);
+const fs$1 = __importStar(require$$0__default$1['default']);
 const os = __importStar(require$$0__default['default']);
 
-function issueCommand(command, message) {
+function issueCommand$1(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
         throw new Error(`Unable to find environment variable for file command ${command}`);
     }
-    if (!fs.existsSync(filePath)) {
+    if (!fs$1.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
     }
-    fs.appendFileSync(filePath, `${utils.toCommandValue(message)}${os.EOL}`, {
+    fs$1.appendFileSync(filePath, `${utils.toCommandValue(message)}${os.EOL}`, {
         encoding: 'utf8'
     });
 }
-exports.issueCommand = issueCommand;
+var issueCommand_1 = issueCommand$1;
 
-});
+
+var fileCommand = /*#__PURE__*/Object.defineProperty({
+	issueCommand: issueCommand_1
+}, '__esModule', {value: true});
 
 var core = createCommonjsModule(function (module, exports) {
 var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -396,7 +394,7 @@ function getState(name) {
     return process.env[`STATE_${name}`] || '';
 }
 exports.getState = getState;
-
+//# sourceMappingURL=core.js.map
 });
 
 const fs = require$$0__default$1['default'].promises;
@@ -405,30 +403,28 @@ const {getInput, setFailed} = core;
 const {issueCommand} = command;
 
 async function run(){
-	try{
-		const action = getInput("action");
-		const matcherFile = require$$1__default['default'].join(__dirname, "../", ".github", "problem-matcher.json");
-		switch(action){
-			case "add":
-				issueCommand("add-matcher", {}, matcherFile);
-				break;
-			case "remove":{
-				const fileContents = await fs.readFile(matcherFile, {encoding: "utf8"});
-				const problemMatcherDocument = JSON.parse(fileContents);
-				const problemMatcher = problemMatcherDocument.problemMatcher[0];
-				issueCommand("remove-matcher", {
-					owner: problemMatcher.owner
-				}, "");
-			}
-				break;
-			default:
-				throw Error(`Unsupported action "${action}"`);
+	const action = getInput("action");
+	const matcherFile = require$$1__default['default'].join(__dirname, "../", ".github", "problem-matcher.json");
+	switch(action){
+		case "add":
+			issueCommand("add-matcher", {}, matcherFile);
+			break;
+		case "remove":{
+			const fileContents = await fs.readFile(matcherFile, {encoding: "utf8"});
+			const problemMatcherDocument = JSON.parse(fileContents);
+			const problemMatcher = problemMatcherDocument.problemMatcher[0];
+			issueCommand("remove-matcher", {
+				owner: problemMatcher.owner
+			}, "");
 		}
-	}catch(error){
-		setFailed(error.message);
-		throw error;
+			break;
+		default:
+			throw new Error(`Unsupported action "${action}"`);
 	}
 }
-run();
+run().catch((error) => {
+	console.error(error);
+	setFailed(error.message);
+});
 
 module.exports = run;
