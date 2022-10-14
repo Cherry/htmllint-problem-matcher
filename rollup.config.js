@@ -12,12 +12,12 @@ export default {
 			format: 'cjs',
 			preferConst: true,
 			indent: '\t',
-			exports: 'default'
-		}
+			exports: 'default',
+		},
 	],
 	plugins: [
 		resolve(),
 		commonjs({transformMixedEsModules: true}),
-		json()
-	]
+		json(),
+	],
 };

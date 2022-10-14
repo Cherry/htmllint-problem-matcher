@@ -21,7 +21,7 @@ describe("problemMatcher", () => {
 		});
 		it("matches file path", () => {
 			const reportOutput = [
-				"src/test.html: line 1, col 1, tag is not closed"
+				"src/test.html: line 1, col 1, tag is not closed",
 			];
 			const results = matchResults(reportOutput, regexp);
 			expect(results.length).toEqual(1);
@@ -38,7 +38,7 @@ describe("problemMatcher", () => {
 		it("matches violations", () => {
 			const reportOutput = [
 				"src/test.html: line 1, col 1, tag is not closed",
-				"src/test.html: line 2, col 2, only <head> and <body> may be children of <html>"
+				"src/test.html: line 2, col 2, only <head> and <body> may be children of <html>",
 			];
 			const results = matchResults(reportOutput, regexp);
 			expect(results.length).toEqual(2);
@@ -47,7 +47,7 @@ describe("problemMatcher", () => {
 			const reportOutput = [
 				"src/test.html: line 1, col 1, tag is not closed",
 				"src/foo.html: line 2, col 2, only <head> and <body> may be children of <html>",
-				"src/bar.html: line 22, col 52, only <head> and <body> may be children of <html>"
+				"src/bar.html: line 22, col 52, only <head> and <body> may be children of <html>",
 			];
 			const results = matchResults(reportOutput, regexp);
 			expect(results.length).toEqual(3);
