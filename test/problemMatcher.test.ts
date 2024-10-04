@@ -9,10 +9,9 @@ import {
 } from 'vitest';
 
 import problemMatcherData from '../.github/problem-matcher.json';
-const problemMatcher = problemMatcherData.problemMatcher[0];
-
 import htmllintProblemMatcher from '../src/index';
 
+const problemMatcher = problemMatcherData.problemMatcher[0];
 const matchResults = function(string, regexp) {
 	return string.map(line => regexp.exec(line));
 };
@@ -88,29 +87,29 @@ describe('loads JS', () => {
 	});
 
 	it('throws with no input', async () => {
-		await expect(htmllintProblemMatcher()).rejects.toThrowError(`Unsupported action ""`);
+		await expect(htmllintProblemMatcher()).rejects.toThrowError('Unsupported action ""');
 	});
 });
 
 describe('throws with invalid action', () => {
 	beforeAll(() => {
-		process.env['INPUT_ACTION'] = 'foo';
+		process.env.INPUT_ACTION = 'foo';
 	});
 	afterAll(() => {
-		delete process.env['INPUT_ACTION'];
+		delete process.env.INPUT_ACTION;
 	});
 
 	it('throws with invalid action', async () => {
-		await expect(htmllintProblemMatcher()).rejects.toThrowError(`Unsupported action "foo"`);
+		await expect(htmllintProblemMatcher()).rejects.toThrowError('Unsupported action "foo"');
 	});
 });
 
 describe('adds matcher', () => {
 	beforeAll(() => {
-		process.env['INPUT_ACTION'] = 'add';
+		process.env.INPUT_ACTION = 'add';
 	});
 	afterAll(() => {
-		delete process.env['INPUT_ACTION'];
+		delete process.env.INPUT_ACTION;
 	});
 
 	it('adds the matcher', async () => {
@@ -130,15 +129,16 @@ describe('adds matcher', () => {
 			}
 		}
 		expect(hasMatch).toBe(true);
+		logMock.mockRestore();
 	});
 });
 
 describe('removes matcher', () => {
 	beforeAll(() => {
-		process.env['INPUT_ACTION'] = 'remove';
+		process.env.INPUT_ACTION = 'remove';
 	});
 	afterAll(() => {
-		delete process.env['INPUT_ACTION'];
+		delete process.env.INPUT_ACTION;
 	});
 
 	it('removes the matcher', async () => {
@@ -158,5 +158,6 @@ describe('removes matcher', () => {
 			}
 		}
 		expect(hasMatch).toBe(true);
+		logMock.mockRestore();
 	});
 });
