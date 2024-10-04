@@ -1,8 +1,8 @@
-const fs = require('node:fs').promises;
-const path = require('node:path');
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 
-const { getInput, setFailed } = require('@actions/core');
-const { issueCommand } = require('@actions/core/lib/command');
+import { getInput, setFailed } from '@actions/core';
+import { issueCommand } from '@actions/core/lib/command';
 
 async function run() {
 	const action = getInput('action');
@@ -14,7 +14,7 @@ async function run() {
 		}
 		case 'remove': {
 			const fileContents = await fs.readFile(matcherFile);
-			const problemMatcherDocument = JSON.parse(fileContents);
+			const problemMatcherDocument = JSON.parse(fileContents.toString());
 			const problemMatcher = problemMatcherDocument.problemMatcher[0];
 			issueCommand('remove-matcher', {
 				owner: problemMatcher.owner,

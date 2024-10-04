@@ -1,17 +1,13 @@
 {
 	"root": true,
 	"extends": [
-		"@nodecraft"
+		"@nodecraft/eslint-config/typescript"
 	],
 	"plugins": [
-		"json",
-		"node"
+		"json"
 	],
 	"parserOptions": {
 		"sourceType": "module"
 	},
-	"rules": {
-		"node/no-missing-import": "off",
-		"node/no-unsupported-features/es-syntax": "off"
-	}
+	"rules": {}
 }
