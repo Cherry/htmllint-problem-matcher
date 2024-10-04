@@ -1,5 +1,17 @@
-let problemMatcher = require('../.github/problem-matcher.json');
-problemMatcher = problemMatcher.problemMatcher[0];
+import {
+	afterAll,
+	beforeAll,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	vi,
+} from 'vitest';
+
+import problemMatcherData from '../.github/problem-matcher.json';
+const problemMatcher = problemMatcherData.problemMatcher[0];
+
+import htmllintProblemMatcher from '../src/index';
 
 const matchResults = function(string, regexp) {
 	return string.map(line => regexp.exec(line));
@@ -67,5 +79,84 @@ describe('problemMatcher', () => {
 			expect(results[2][pattern.column]).toEqual('52');
 			expect(results[2][pattern.message]).toEqual('only <head> and <body> may be children of <html>');
 		});
+	});
+});
+
+describe('loads JS', () => {
+	it('loads the JS file', () => {
+		expect(htmllintProblemMatcher).toBeDefined();
+	});
+
+	it('throws with no input', async () => {
+		await expect(htmllintProblemMatcher()).rejects.toThrowError(`Unsupported action ""`);
+	});
+});
+
+describe('throws with invalid action', () => {
+	beforeAll(() => {
+		process.env['INPUT_ACTION'] = 'foo';
+	});
+	afterAll(() => {
+		delete process.env['INPUT_ACTION'];
+	});
+
+	it('throws with invalid action', async () => {
+		await expect(htmllintProblemMatcher()).rejects.toThrowError(`Unsupported action "foo"`);
+	});
+});
+
+describe('adds matcher', () => {
+	beforeAll(() => {
+		process.env['INPUT_ACTION'] = 'add';
+	});
+	afterAll(() => {
+		delete process.env['INPUT_ACTION'];
+	});
+
+	it('adds the matcher', async () => {
+		const logs: (string | Uint8Array)[] = [];
+		const logMock = vi.spyOn(process.stdout, 'write').mockImplementation((message) => {
+			logs.push(message);
+			return true;
+		});
+
+		await expect(htmllintProblemMatcher()).resolves.toBeUndefined();
+
+		let hasMatch = false;
+		for (const log of logs) {
+			if (typeof log === 'string' && log.includes('::add-matcher')) {
+				hasMatch = true;
+				break;
+			}
+		}
+		expect(hasMatch).toBe(true);
+	});
+});
+
+describe('removes matcher', () => {
+	beforeAll(() => {
+		process.env['INPUT_ACTION'] = 'remove';
+	});
+	afterAll(() => {
+		delete process.env['INPUT_ACTION'];
+	});
+
+	it('removes the matcher', async () => {
+		const logs: (string | Uint8Array)[] = [];
+		const logMock = vi.spyOn(process.stdout, 'write').mockImplementation((message) => {
+			logs.push(message);
+			return true;
+		});
+
+		await expect(htmllintProblemMatcher()).resolves.toBeUndefined();
+
+		let hasMatch = false;
+		for (const log of logs) {
+			if (typeof log === 'string' && log.includes('::remove-matcher')) {
+				hasMatch = true;
+				break;
+			}
+		}
+		expect(hasMatch).toBe(true);
 	});
 });
