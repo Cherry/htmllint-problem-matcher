@@ -120,15 +120,11 @@ describe('adds matcher', () => {
 		});
 
 		await expect(htmllintProblemMatcher()).resolves.toBeUndefined();
-
-		let hasMatch = false;
-		for (const log of logs) {
-			if (typeof log === 'string' && log.includes('::add-matcher')) {
-				hasMatch = true;
-				break;
-			}
-		}
-		expect(hasMatch).toBe(true);
+		expect(logs).toEqual(
+			expect.arrayContaining([
+				expect.stringContaining('::add-matcher::'),
+			]),
+		);
 		logMock.mockRestore();
 	});
 });
@@ -149,15 +145,11 @@ describe('removes matcher', () => {
 		});
 
 		await expect(htmllintProblemMatcher()).resolves.toBeUndefined();
-
-		let hasMatch = false;
-		for (const log of logs) {
-			if (typeof log === 'string' && log.includes('::remove-matcher')) {
-				hasMatch = true;
-				break;
-			}
-		}
-		expect(hasMatch).toBe(true);
+		expect(logs).toEqual(
+			expect.arrayContaining([
+				expect.stringContaining('::remove-matcher'),
+			]),
+		);
 		logMock.mockRestore();
 	});
 });
